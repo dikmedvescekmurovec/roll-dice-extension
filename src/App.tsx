@@ -1,25 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Box,
+  Button,
+  createMuiTheme,
+  ThemeProvider,
+  Typography,
+} from "@material-ui/core";
+import { useState } from "react";
+import "./App.css";
+import RollDiceButton from "./RollDiceButton";
+import RollDisplay from "./RollDisplay";
+
+const theme = createMuiTheme({
+  typography: {
+    allVariants: {
+      color: "#FFFFFF",
+    },
+    fontFamily: [
+      "Poppins",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    fontSize: 14,
+    h1: {
+      fontSize: 24,
+      fontWeight: 700,
+    },
+  },
+});
 
 function App() {
+  const [diceRolls, setDiceRolls] = useState<number[]>([0, 0]);
+  const [count, setCount] = useState(2);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <ThemeProvider theme={theme}>
+      <Box
+        height="100%"
+        flex={1}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        bgcolor="#006d77"
+        padding="16px"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="row"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Button onClick={() => setCount(count > 1 ? count - 1 : 1)}>
+            <Typography>-</Typography>
+          </Button>
+          <RollDisplay diceRolls={diceRolls}></RollDisplay>{" "}
+          <Button onClick={() => setCount(count + 1)}>
+            <Typography>+</Typography>
+          </Button>
+        </Box>
+
+        <RollDiceButton
+          setDiceRolls={setDiceRolls}
+          count={count}
+        ></RollDiceButton>
+      </Box>
+    </ThemeProvider>
   );
 }
 
